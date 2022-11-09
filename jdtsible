@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e  # ①
+cd "$(cd "$(dirname "$0")"; pwd)"  #  ②
+
+help () {  # ③
+    fatal <<HELP_MSG
+Usage:
+
+  $0 [ -t sometag ] [ ... ]
+HELP_MSG
+}
+
+ensure_ansible () {    # ④
+    if ! test -f ansible-deps-cache/.versions 2>/dev/null; then  # ⑤
+        curl https://raw.githubusercontent.com/epfl-si/ansible.suitcase/master/install.sh | \
+            SUITCASE_DIR=$PWD/ansible-deps-cache \
+            SUITCASE_ANSIBLE_VERSION=3.4.0 \
+            bash -x
+    fi
+    export PATH="$PWD/ansible-deps-cache/bin:$PATH"  # ⑥
+    export ANSIBLE_ROLES_PATH="$PWD/ansible-deps-cache/roles"
+    export ANSIBLE_COLLECTIONS_PATHS="$PWD/ansible-deps-cache"
+
+    . ansible-deps-cache/lib.sh  #  ⑦
+}
+
+ensure_ansible
+[ "$1" == "--help" ] && help
+# ⑧
+ansible-playbook -i inventory.yml playbook.yml "$@"

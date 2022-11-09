@@ -1,0 +1,5 @@
+- include_vars: jdt-generator-vars.yml
+  tags: always
+
+- include_tasks:
+    file: deploy.yml

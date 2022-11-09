@@ -1,0 +1,6 @@
+- name: Deploy jdt-generator
+  hosts: all
+  gather_facts: no
+  roles:
+    - roles/jdt-generator
+ 

@@ -1,0 +1,33 @@
+- name: Test debug
+  debug:
+    msg: "Hello from jdt-generator's debug"
+# Installer docker-compose
+- name: Install docker-compose
+  become: yes
+  apt:
+    package:
+      - docker-compose
+# - Cloner le repo github de jdt-generator (https://github.com/Azecko/jdt-generator) sur la vm
+- name: Clone a repo with separate git directory
+  ansible.builtin.git:
+    repo: "{{ jdtgenerator_github_repo }}"
+    dest: "{{ jdtgenerator_deploy_path }}"
+    force: yes
+# Copier le .env
+- name: Copy .env
+  copy:
+    src: "{{ jdtgenerator_env_keybase }}"
+    dest: "{{ jdtgenerator_deploy_path }}"
+# Copier le fichier JSON généré par Google
+- name: Copy google scraper
+  copy:
+    src: "{{ jdtgenerator_google_scraper }}"
+    dest: "{{ jdtgenerator_deploy_path }}"
+# Créer le crontab
+- name: Run jdt-generator crontab
+  ansible.builtin.cron:
+    name: "jdt-generator"
+    weekday: "5"
+    hour: "18"
+    minute: "0"
+    job: "cd /srv/jdt-generator && docker-compose up"

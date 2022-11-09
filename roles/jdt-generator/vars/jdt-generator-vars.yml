@@ -1,0 +1,4 @@
+jdtgenerator_deploy_path: '/srv/jdt-generator'
+jdtgenerator_env_keybase: '/keybase/team/epfl_idevfsd/jdt-generator/.env'
+jdtgenerator_google_scraper: '/keybase/team/epfl_idevfsd/jdt-generator/sheets-scraper-364007-c3b929524f96.json'
+jdtgenerator_github_repo: 'https://github.com/Azecko/jdt-generator'
