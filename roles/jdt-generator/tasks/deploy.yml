@@ -28,6 +28,6 @@
   ansible.builtin.cron:
     name: "jdt-generator"
     weekday: "5"
-    hour: "18"
+    hour: "16"
     minute: "0"
     job: "cd /srv/jdt-generator && docker-compose up"
